@@ -36,9 +36,14 @@ FOREIGN KEY (sin) REFERENCES Person(sin));
 
 # DROP TABLE HealthWorker;
 
-CREATE table Vaccinations(
+CREATE TABLE Vaccinations(
+sin int, # Person key.
+vaccineType ENUM('Pfizer', 'Moderna', 'AstraZeneca', 'Johnson & Johnson'),
+doseNumber int,
+vaccinationDate Date,
+status ENUM('SAFE', 'SUSPENDED'));
 
-CREATE table PublicHealthFacilities(
+CREATE TABLE PublicHealthFacilities(
 name varchar(100),
 address mediumtext,
 phoneNumber long,
@@ -47,3 +52,6 @@ type ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 capacity int,
 workerID int, # This is the manger ID.
 FOREIGN KEY (workerID) REFERENCES HealthWorker(workerID));
+
+CREATE TABLE GroupAge(
+
