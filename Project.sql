@@ -49,10 +49,27 @@ name varchar(100),
 address mediumtext,
 phoneNumber int,
 webAddress varchar(100),
-type ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
+facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 capacity int,
 workerID int, # This is the manger ID.
 FOREIGN KEY (workerID) REFERENCES HealthWorker(workerID));
 
 CREATE TABLE GroupAge(
+groupID int auto_increment,
+groupDescription varchar(20),
+PRIMARY KEY (groupID));
+
+INSERT INTO GroupAge (groupDescription)
+VALUES ("80+"), 
+("70-79"), 
+("60-69"), 
+("50-59"), 
+("40-49"), 
+("30-39"), 
+("18-29"), 
+("12-17"), 
+("5-11"), 
+("0-4");
+
+
 
