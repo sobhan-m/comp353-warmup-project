@@ -1,7 +1,7 @@
 # Test 1
 
-# CREATE database Project;
-# USE Project;
+CREATE database Project;
+USE Project;
 
 CREATE TABLE Person(
 sin int NOT NULL,
@@ -18,8 +18,9 @@ province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
 postalCode varchar(6),
 citizenship varchar(100),
 emailAddress varchar(100),
-passportNumber int
-PRIMARY KEY (sin));
+passportNumber int,
+PRIMARY KEY(sin)
+);
 
 INSERT INTO Person (sin, firstName, lastName, dateOfBirth, medicareCardNum, medicareIssueDate, medicareExpiryDate, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress) 
 VALUES (111111, "John", "Smith", '1990-01-01', 11111, '1990-01-01', '2030-01-01', 111111, '100 Guy Street', 'Montreal', 'QC', 'A1A1A1', 'Canadian', 'john.smith@gmail.com');
