@@ -11,13 +11,14 @@ dateOfBirth Date NOT NULL,
 medicareCardNum int,
 medicareIssueDate Date,
 medicareExpiryDate Date,
-telephoneNumber long,
+telephoneNumber int,
 address mediumtext,
 city varchar(100),
 province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
 postalCode varchar(6),
 citizenship varchar(100),
 emailAddress varchar(100),
+passportNumber int
 PRIMARY KEY (sin));
 
 INSERT INTO Person (sin, firstName, lastName, dateOfBirth, medicareCardNum, medicareIssueDate, medicareExpiryDate, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress) 
@@ -46,7 +47,7 @@ status ENUM('SAFE', 'SUSPENDED'));
 CREATE TABLE PublicHealthFacilities(
 name varchar(100),
 address mediumtext,
-phoneNumber long,
+phoneNumber int,
 webAddress varchar(100),
 type ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 capacity int,
