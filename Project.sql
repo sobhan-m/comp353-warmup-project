@@ -11,13 +11,14 @@ dateOfBirth Date NOT NULL,
 medicareCardNum int,
 medicareIssueDate Date,
 medicareExpiryDate Date,
-telephoneNumber long,
+telephoneNumber int,
 address mediumtext,
 city varchar(100),
 province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
 postalCode varchar(6),
 citizenship varchar(100),
 emailAddress varchar(100),
+passportNumber int
 PRIMARY KEY (sin));
 
 INSERT INTO Person (sin, firstName, lastName, dateOfBirth, medicareCardNum, medicareIssueDate, medicareExpiryDate, telephoneNumber, address, city, province, postalCode, citizenship, emailAddress) 
@@ -36,14 +37,39 @@ FOREIGN KEY (sin) REFERENCES Person(sin));
 
 # DROP TABLE HealthWorker;
 
-CREATE table Vaccinations(
+CREATE TABLE Vaccinations(
+sin int, # Person key.
+vaccineType ENUM('Pfizer', 'Moderna', 'AstraZeneca', 'Johnson & Johnson'),
+doseNumber int,
+vaccinationDate Date,
+status ENUM('SAFE', 'SUSPENDED'));
 
-CREATE table PublicHealthFacilities(
+CREATE TABLE PublicHealthFacilities(
 name varchar(100),
 address mediumtext,
-phoneNumber long,
+phoneNumber int,
 webAddress varchar(100),
-type ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
+facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
 capacity int,
 workerID int, # This is the manger ID.
 FOREIGN KEY (workerID) REFERENCES HealthWorker(workerID));
+
+CREATE TABLE GroupAge(
+groupID int auto_increment,
+groupDescription varchar(20),
+PRIMARY KEY (groupID));
+
+INSERT INTO GroupAge (groupDescription)
+VALUES ("80+"), 
+("70-79"), 
+("60-69"), 
+("50-59"), 
+("40-49"), 
+("30-39"), 
+("18-29"), 
+("12-17"), 
+("5-11"), 
+("0-4");
+
+
+
