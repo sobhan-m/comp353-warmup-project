@@ -99,10 +99,10 @@ VALUES ("80+"),
 ====================================================================
 */
 
-CREATE InfectionHistory(
+CREATE TABLE InfectionHistory(
 personID INT,
 infectionDate DATE,
-PRIMARY (personID, infectionDate),
+PRIMARY KEY (personID, infectionDate),
 FOREIGN KEY (personID) REFERENCES Person(id)
 );
 
