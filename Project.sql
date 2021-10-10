@@ -189,3 +189,28 @@ FOREIGN KEY (id) REFERENCES Person(id),
 FOREIGN KEY (healthWorkerID) REFERENCES HealthWorker(workerID),
 FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
 );
+
+/*
+====================================================================
+Queries
+====================================================================
+*/
+
+-- 1
+
+-- 2
+
+-- 3
+
+-- 4
+
+-- 5
+
+-- 6
+
+-- 7
+
+-- 8
+
+-- 9
+
