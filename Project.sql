@@ -201,8 +201,29 @@ Queries
 -- 2
 
 -- 3
+SELECT phf.name, phf.address, phf.phoneNumber, phf.webAddress, phf.facilityType, m.firstName, m.lastName, q1.employeeCount, q2.nurseCount
+FROM ((PublicHealthFacilities phf INNER JOIN HealthWorker hw
+	ON phf.managerID = hw.workerID) INNER JOIN 
+		(SELECT a1.facilityName, COUNT(a.workerID) employeeCount
+		FROM Assignments a1
+		GROUP BY a1.facilityName) q1
+			ON q1.facilityName = phf.name) INNER JOIN
+				(SELECT a.facilityName, COUNT(a.workerID) nurseCount
+				FROM Assignments a INNER JOIN HealthWorker hw
+					ON a.workerID = hw.workerID
+				WHERE hw.employeeType = "NURSE"
+				GROUP BY a.facilityName) q2
+					ON q2.facilityName = phf.name;
 
 -- 4
+SELECT p.firstName, p.lastName, p.dateOfBirth, p.emailAddress, p.phoneNumber, p.citizenship, v.vaccinationDate, av.vaccinationType, EXISTS(SELECT * FROM InfectionHistory ih WHERE p.id = ih.personID)
+FROM (((Vaccinations v INNER JOIN Person p
+	ON v.id = p.id) INNER JOIN Unregistered u
+		ON v.id = u.id) INNER JOIN ApprovedVaccinations av
+			ON av.vaccinationName = v.vaccinationName);
+				 
+
+
 
 -- 5
 
