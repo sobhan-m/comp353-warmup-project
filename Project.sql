@@ -2,6 +2,7 @@
 
 CREATE database Project;
 USE Project;
+DROP database Project;
 
 /*
 ====================================================================
@@ -55,7 +56,17 @@ VALUES ("John", "Smith", '1990-01-01', 000000, '100 Guy Street', 'Montreal', 'QC
 ("Adrien", "Burns", '1993-11-10', 766666, '1112 Fillion Street', 'Shiraz', 'MB', 'Q1Q1Q1', 'Iranian', 'adrien.burns@gmail.com', 7),
 ("Tala", "Sleeman", '2007-01-01', 877777, '909 Deguire Street', 'Praque', 'SK', 'R1R1R1', 'Czechinians', 'tala.sleeman@gmail.com', 8),
 ("Malek", "Jerbi", '1964-10-28', 988888, '744 Cleroux Street', 'Kathmandu', 'AB', 'S1S1S1', 'Nepalian', 'malek.jerbi@gmail.com', 4),
-("Hercules", "DeGreece", '2001-12-02', 099999, '1112 Sherbrook Street', 'Yokohama', 'YT', 'T1T1T1', 'Japanese', 'Hercules.degreece@gmail.com', 7);
+("Hercules", "DeGreece", '2001-12-02', 099999, '1112 Sherbrook Street', 'Yokohama', 'YT', 'T1T1T1', 'Japanese', 'Hercules.degreece@gmail.com', 7),
+("Jimmy", "Neutron", '1970-01-01', 110000, '102 Guy Street', 'Montreal', 'QC', 'U1U1U1', 'Canadian', 'jimmy.neutron@gmail.com', 4),
+("Crocodile", "Nini", '1967-10-23', 221111, '202 Maisonneuve Street', 'Almaty', 'NB', 'V1V1V1', 'Kazakhastanian', 'crocodile.nini@gmail.com', 4),
+("Ali", "Dawah", '1980-03-30', 332222, '1982 Norman Street', 'Kawasaki', 'NL', 'W1W1W1', 'Japanese', 'ali.dawah@gmail.com', 5),
+("Mohammed", "Hijad", '2001-09-01', 433333, '3477 De la montagne Street', 'Bandung', 'PE', 'X1X1X1', 'Indian', 'mohammed.hijad@gmail.com', 7),
+("Ragnar", "Lothbrok", '1950-01-01', 554444, '5002 Peel Street', 'Sapporo', 'NS', 'A2A2A2', 'Japanese', 'ragnar.lothbrok@gmail.com', 2),
+("Younes", "Garbili", '1955-01-01', 665555, '2003 Dutrisac Street', 'Baghdad', 'ON', 'B2B2B2', 'Indian', 'younes.garbili@gmail.com', 3),
+("Jean-Francois", "Vo", '1983-11-10', 776666, '1113 Fillion Street', 'Shiraz', 'MB', 'C2C2C2', 'Iranian', 'jeanfrancois.vo@gmail.com', 6),
+("Emilio", "Sanchez", '1997-01-01', 887777, '910 Deguire Street', 'Praque', 'SK', 'D2D2D2', 'Czechinians', 'emilio.sanchez@gmail.com', 7),
+("Gustave", "Americ", '1954-10-28', 998888, '745 Cleroux Street', 'Kathmandu', 'AB', 'E2E2E2', 'Nepalian', 'gustave.americ@gmail.com', 3),
+("Hermes", "Lefameux", '1991-12-02', 009999, '1113 Sherbrook Street', 'Yokohama', 'YT', 'F2F2F2', 'Japanese', 'Hermes.Lefameux@gmail.com', 6);
 #("80+"), 1
 #("70-79"), 2 
 #("60-69"), 3
@@ -85,16 +96,27 @@ PRIMARY KEY (medicareCardNum),
 FOREIGN KEY (id) REFERENCES Person(id)
 );
 INSERT INTO Registered (id, medicareIssueDate, medicareExpiryDate)
-VALUES(000000, '1990-01-01','2040-01-01'),
-(111111,'1987-10-23', '2037-10-23'),
-(222222, '2000-03-30', '2050-03-30'),
-(333333, '2021-09-01', '2071-09-01'),
-(444444, '1960-03-20', '2022-03-20'),
-(555555, '1975-01-01', '2025-01-01'),
-(666666, '2003-11-10', '2053-11-10'),
-(777777, '2017-01-01', '2067-01-01'),
-(888888, '1974-10-28', '2024-10-28'),
-(999999, '2011-12-02', '2011-12-02');
+VALUES(1, '1990-01-01','2040-01-01'),
+(2,'1987-10-23', '2037-10-23'),
+(3, '2000-03-30', '2050-03-30'),
+(4, '2021-09-01', '2071-09-01'),
+(5, '1960-03-20', '2022-03-20'),
+(6, '1975-01-01', '2025-01-01'),
+(7, '2003-11-10', '2053-11-10'),
+(8, '2017-01-01', '2067-01-01'),
+(9, '1974-10-28', '2024-10-28'),
+(10, '2011-12-02', '2011-12-02'),
+(21, '1970-01-01', '2025-01-01'),
+(22, '1967-10-23', '2025-10-23'),
+(23, '1980-03-30', '2030-03-30'),
+(24, '2001-09-01', '2051-09-01'),
+(25, '1950-01-01', '2025-01-01'),
+(26, '1955-01-01', '2025-01-01'),
+(27, '1983-11-10', '2033-11-10'),
+(28, '1997-01-01', '2047-01-01'),
+(29, '1954-10-28', '2025-10-28'),
+(30, '1991-12-02', '2041-12-02');
+;
 
 /*
 ====================================================================
@@ -176,8 +198,10 @@ FOREIGN KEY (id) REFERENCES Person(id)
 );
 
 INSERT INTO HealthWorker(id, employeeType)
-VALUES(1,'Manager'),(2, 'Nurse'), (3, 'Security'), (4, 'Secretary'),(5, 'Regular Employee'),(6, 'Nurse'),
-(7, 'Security'),(8, 'Regular Employee'),(9, 'Nurse'),(10, 'Security');
+VALUES(1,'Manager'),(2, 'Nurse'), (3, 'Security'), (4, 'Secretary'),(5, 'Regular Employee'),
+(6, 'Nurse'), (7, 'Security'),(8, 'Regular Employee'),(9, 'Nurse'),(10, 'Security'),(21, 'Regular Employee'), 
+(22, 'Manager'),(23, 'Manager'),(24, 'Manager'),(25, 'Manager'),(26, 'Manager'),(27, 'Manager'),(28, 'Manager'),
+(29, 'Manager'),(30, 'Manager');
 
 SELECT * FROM HealthWorker;
 
@@ -201,6 +225,21 @@ FOREIGN KEY (managerID) REFERENCES HealthWorker(workerID),
 PRIMARY KEY (name)
 );
 
+INSERT INTO PublicHealthFacilities(name, address, phoneNumber, webAddress, facilityType, capacity, managerID)
+VALUES('A', '1 Elephant street', 514111111,'www.a.com', 'HOSPITAL', 5000, 1),
+('B', '2 Mouse street', 514222222,'www.b.com', 'CLINIC', 500, 11),
+('C', '3 Cat street', 514333333,'www.c.com', 'SPECIAL INSTALLMENT', 50, 12),
+('D', '4 Dog street', 514444444,'www.d.com', 'HOSPITAL', 6000, 13),
+('E', '5 Bird street', 514555555,'www.e.com', 'CLINIC', 600, 14),
+('F', '6 Snake street', 514666666,'www.f.com', 'SPECIAL INSTALLMENT', 60, 15),
+('G', '7 Spider street', 514777777,'www.g.com', 'HOSPITAL', 7000, 16),
+('H', '8 Kangoroo street', 514888888,'www.h.com', 'CLINIC', 700, 17),
+('I', '9 Ant street', 514999999,'www.i.com', 'SPECIAL INSTALLMENT', 70, 18),
+('J', '10 Rabbit street', 514000000,'www.j.com', 'HOSPITAL', 8000, 19);
+
+SELECT * FROM PublicHealthFacilities;
+
+DROP TABLE PublicHealthFacilities;
 /*
 ====================================================================
  Assignments
@@ -217,6 +256,26 @@ FOREIGN KEY (workerID) REFERENCES HealthWorker(workerID),
 FOREIGN KEY (facilityName) REFERENCES PublicHealthFacilities(name)
 );
 
+INSERT INTO Assignments(workerID, facilityName, startDate, endDate)
+VALUES(1, 'A', '2019-12-12', NULL),
+(2, 'B', '2020-01-01', '2020-06-01'),
+(3, 'C', '2020-05-13', '2020-10-13'),
+(4, 'D', '2020-04-25', '2020-09-25'),
+(5, 'E', '2021-01-01', '2021-06-01'),
+(6, 'F', '2020-10-10', '2021-03-10'),
+(7, 'G', '2020-03-23', '2020-08-23'),
+(8, 'H', '2020-07-12', '2020-12-12'),
+(9, 'I', '2020-06-11', '2020-11-11'),
+(10, 'J', '2020-09-02', '2020-02-02'),
+(11, 'B', '2019-12-12', NULL),
+(12, 'C', '2020-01-01', NULL),
+(13, 'D', '2020-05-13', NULL),
+(14, 'E', '2020-04-25', NULL),
+(15, 'F', '2021-01-01', NULL),
+(16, 'G', '2020-10-10', NULL),
+(17, 'H', '2020-03-23', NULL),
+(18, 'I', '2020-07-12', NULL),
+(19, 'J', '2020-06-11', NULL);
 /*
 ====================================================================
  ApprovedVaccinations
@@ -233,7 +292,15 @@ PRIMARY KEY (vaccinationName)
 
 INSERT INTO ApprovedVaccinations(vaccinationName, dateOfApproval, vaccinationType, dateOfSuspension)
  VALUES('AstraZeneca', '2020-10-28', 'SAFE', NULL), ('Pfizer', '2020-06-10', 'SAFE', NULL),
- ('JJ', '2021-01-03', 'SUSPENDED', '2021-02-04'), ('Moderna', '2020-04-04', 'SAFE', NULL);
+ ('JJ', '2021-01-03', 'SUSPENDED', '2021-02-04'), ('Moderna', '2020-04-04', 'SAFE', NULL),
+ ('AZ', '2020-07-28', 'SAFE', NULL), ('PB', '2020-03-10', 'SAFE', NULL),
+ ('Astra', '2020-04-28', 'SUSPENDED', '2020-10-18'),('Pfiz', '2020-05-29', 'SUSPENDED', '2020-08-29'),
+ ('Johnson & Johnson', '2020-10-03', 'SUSPENDED', '2021-01-14'),('Janssen', '2020-12-12', 'SAFE', NULL),
+ ('M.', '2020-06-06', 'SAFE', NULL), ('Mod.', '2020-05-04', 'SUSPENDED', '2020-08-08');
+ 
+ SELECT * FROM ApprovedVaccinations;
+ 
+ DROP TABLE ApprovedVaccinations;
 /*
 ====================================================================
  Vaccinations
@@ -255,6 +322,21 @@ FOREIGN KEY (healthWorkerID) REFERENCES HealthWorker(workerID),
 FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
 );
 
+INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, country, doseNumber)
+VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'Alpha1', 'Canada', 1),
+(12, 6, 'AstraZeneca', '2020-12-12', 10, 'Beta1', 'United States', 2),
+(22, 9, 'Pfizer', '2020-07-10', 7, 'Charlie1', 'Iran', 1),
+(16, 9, 'M.', '2020-12-12', 12, 'Delta1', 'Iraq', 2),
+(14, 6, 'Janssen', '2020-12-12', 6, 'Echo1', 'Lebanon', 1),
+(19, 2, 'PB', '2020-12-12', 8, 'Quebec1', 'Syria', 2),
+(6, 2, 'Moderna', '2020-12-12', 9, 'October1', 'Moroco', 1),
+(4, 2, 'AZ', '2020-12-12', 11, 'June1', 'Algeria', 2),
+(1, 9, 'AstraZeneca', '2020-12-12', 13, 'Mars1', 'Tunisia', 1),
+(29, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'Canada', 2);
+
+SELECT * FROM Vaccinations;
+
+DROP TABLE Vaccinations;
 /*
 ====================================================================
 Queries
