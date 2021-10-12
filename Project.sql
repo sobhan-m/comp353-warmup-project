@@ -368,13 +368,17 @@ SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, Approv
 
 SELECT PublicHealthFacilities.name, firstName, lastName, COUNT(Vaccinations.healthWorkerID)/10 as 'People vaccinated'
 	FROM Person INNER JOIN Healthworker ON Person.id = Healthworker.id 
-    INNER JOIN Vaccinations ON Healthworker.id = Vaccinations.healthWorkerID 
-    INNER JOIN Assignments ON Healthworker.id = Assignments.workerID 
-    INNER JOIN PublicHealthFacilities ON Assignments.facilityName = PublicHealthFacilities.name
-    GROUP BY firstName AND PublicHealthFacilities.name;
+		INNER JOIN Vaccinations ON Healthworker.id = Vaccinations.healthWorkerID 
+		INNER JOIN Assignments ON Healthworker.id = Assignments.workerID 
+		INNER JOIN PublicHealthFacilities ON Assignments.facilityName = PublicHealthFacilities.name
+		GROUP BY firstName AND PublicHealthFacilities.name;
 
 -- 9
 
+SELECT Person.city, COUNT(Vaccinations.id)/30
+	FROM Person,Vaccinations 
+    WHERE Person.province = 'QC';
+	
 
 
 -- Droppers
