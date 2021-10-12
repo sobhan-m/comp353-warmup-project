@@ -349,21 +349,21 @@ Queries
 
 -- 3
 SELECT phf.name, phf.address, phf.phoneNumber, phf.webAddress, phf.facilityType, m.firstName, m.lastName, q1.employeeCount, q2.nurseCount
-FROM ((PublicHealthFacilities phf INNER JOIN HealthWorker hw
-	ON phf.managerID = hw.workerID) INNER JOIN 
-		(SELECT a1.facilityName, COUNT(a.workerID) employeeCount
+FROM (((PublicHealthFacilities phf INNER JOIN HealthWorker hw
+	ON phf.managerID = hw.workerID) INNER JOIN Person m
+		ON hw.id = m.id) INNER JOIN
+		(SELECT a1.facilityName, COUNT(a1.workerID) employeeCount
 		FROM Assignments a1
 		GROUP BY a1.facilityName) q1
-			ON q1.facilityName = phf.name) INNER JOIN
-				(SELECT a.facilityName, COUNT(a.workerID) nurseCount
-				FROM Assignments a INNER JOIN HealthWorker hw
-					ON a.workerID = hw.workerID
-				WHERE hw.employeeType = "NURSE"
-				GROUP BY a.facilityName) q2
-					ON q2.facilityName = phf.name;
+			ON q1.facilityName = phf.name) INNER JOIN 
+					(SELECT a2.facilityName, COUNT(CASE WHEN hw2.employeeType = "NURSE" THEN 1 END) nurseCount
+					FROM Assignments a2 INNER JOIN HealthWorker hw2
+						ON a2.workerID = hw2.workerID
+					GROUP BY a2.facilityName) q2
+						ON q2.facilityName = phf.name;
 
 -- 4
-SELECT p.firstName, p.lastName, p.dateOfBirth, p.emailAddress, p.phoneNumber, p.citizenship, v.vaccinationDate, av.vaccinationType, EXISTS(SELECT * FROM InfectionHistory ih WHERE p.id = ih.personID)
+SELECT p.firstName, p.lastName, p.dateOfBirth, p.emailAddress, p.telephoneNumber, p.citizenship, v.vaccinationDate, av.vaccinationName, av.vaccinationType, EXISTS(SELECT * FROM InfectionHistory ih WHERE p.id = ih.personID) hasBeenInfected
 FROM (((Vaccinations v INNER JOIN Person p
 	ON v.id = p.id) INNER JOIN Unregistered u
 		ON v.id = u.id) INNER JOIN ApprovedVaccinations av
