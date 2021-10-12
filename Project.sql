@@ -375,9 +375,10 @@ SELECT PublicHealthFacilities.name, firstName, lastName, COUNT(Vaccinations.heal
 
 -- 9
 
-SELECT Person.city, COUNT(Vaccinations.id)/30
+SELECT Person.city, COUNT(Vaccinations.id)/30 as 'people vaccinated in city'
 	FROM Person,Vaccinations 
-    WHERE Person.province = 'QC';
+    WHERE Person.province = 'QC'
+    GROUP BY city;
 	
 
 
