@@ -178,9 +178,11 @@ FOREIGN KEY (personID) REFERENCES Person(id)
 
 INSERT INTO InfectionHistory(personID, infectionDate)
 VALUES(6,'2020-10-10'),(16,'2020-09-09'),(19, '2020-08-08'),(8, '2020-07-07'),(9, '2020-06-06'),
-(5, '2020-05-05'),(11, '2020-04-04'),(13, '2020-03-03'),(1, '2020-02-02'),(3, '2020-01-01');
+(5, '2020-05-05'),(11, '2020-04-04'),(13, '2020-03-03'),(1, '2020-02-02'),(3, '2020-01-01'), (3, '2021-01-01'), (2, '2021-01-01'), (2, '2021-03-01'), (4, '2021-01-01'), (12, '2021-01-01');
 
 SELECT * FROM InfectionHistory;
+
+DELETE FROM InfectionHistory;
 
 DROP TABLE InfectionHistory;
 /*
@@ -324,17 +326,24 @@ FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
 
 INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, country, doseNumber)
 VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'Alpha1', 'Canada', 1),
+(12, 6, 'AstraZeneca', '2020-08-12', 10, 'Beta1', 'United States', 1),
 (12, 6, 'AstraZeneca', '2020-12-12', 10, 'Beta1', 'United States', 2),
 (22, 9, 'Pfizer', '2020-07-10', 7, 'Charlie1', 'Iran', 1),
+(16, 9, 'M.', '2020-11-12', 12, 'Delta1', 'Iraq', 1),
 (16, 9, 'M.', '2020-12-12', 12, 'Delta1', 'Iraq', 2),
 (14, 6, 'Janssen', '2020-12-12', 6, 'Echo1', 'Lebanon', 1),
+(19, 2, 'PB', '2020-11-12', 8, 'Quebec1', 'Syria', 1),
 (19, 2, 'PB', '2020-12-12', 8, 'Quebec1', 'Syria', 2),
-(6, 2, 'Moderna', '2020-12-12', 9, 'October1', 'Moroco', 1),
+(7, 2, 'Moderna', '2020-12-12', 9, 'October1', 'Moroco', 1),
+(4, 2, 'AZ', '2020-11-12', 11, 'June1', 'Algeria', 1),
 (4, 2, 'AZ', '2020-12-12', 11, 'June1', 'Algeria', 2),
 (1, 9, 'AstraZeneca', '2020-12-12', 13, 'Mars1', 'Tunisia', 1),
-(29, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'Canada', 2);
+(2, 9, 'AstraZeneca', '2020-11-12', 14, 'July1', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'Canada', 2);
 
 SELECT * FROM Vaccinations;
+
+DELETE FROM Vaccinations;
 
 DROP TABLE Vaccinations;
 /*
@@ -352,9 +361,38 @@ Queries
 -- 4
 
 -- 5
-
+SELECT Person.id AS 'ID', firstName AS 'First Name', LastName AS 'Last Name', employeeType AS 'Employement'
+FROM Person, InfectionHistory, HealthWorker, Vaccinations
+WHERE Person.id = HealthWorker.id AND employeeType = 'Nurse' AND Person.id NOT IN (SELECT v2.id FROM Vaccinations v2)
+GROUP BY Person.id;
 -- 6
 
+-- People not vaccinated
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count",  CASE WHEN MAX(v.doseNumber) IS NULL THEN 0 ELSE MAX(v.doseNumber) END AS 'Dose number'
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+WHERE p.id NOT IN (SELECT v.id FROM Vaccinations v)
+GROUP BY p.id;
+
+-- People one dose
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count", MAX(v.doseNumber)
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+GROUP BY p.id
+HAVING COUNT(v.doseNumber) = 1;
+
+-- People with two doses and 1 infection
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count", MAX(v.doseNumber)
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+GROUP BY p.id
+HAVING COUNT(DISTINCT v.doseNumber) = 2 AND COUNT(DISTINCT ih.infectionDate) = 1;
 -- 7
 
 -- 8
