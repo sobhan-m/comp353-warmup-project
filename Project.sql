@@ -352,7 +352,11 @@ Queries
 -- 3
 
 -- 4
-
+SELECT p.firstName, p.lastName, p.dateOfBirth, p.emailAddress, p.telephoneNumber, p.citizenship, v.vaccinationDate, av.vaccinationName, av.vaccinationType, EXISTS(SELECT * FROM InfectionHistory ih WHERE p.id = ih.personID) hasBeenInfected
+FROM (((Vaccinations v INNER JOIN Person p
+	ON v.id = p.id) INNER JOIN Unregistered u
+		ON v.id = u.id) INNER JOIN ApprovedVaccinations av
+			ON av.vaccinationName = v.vaccinationName);
 -- 5
 
 -- 6
@@ -366,11 +370,12 @@ SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, Approv
 
 -- 8
 
-SELECT DISTINCT Person.firstName, Person.lastName
-	FROM Person INNER JOIN Healthworker ON Person.id = Healthworker.id WHERE Healthworker.employeeType='NURSE';
-    
-
-
+SELECT PublicHealthFacilities.name, firstName, lastName, COUNT(Vaccinations.healthWorkerID)/10 as 'People vaccinated'
+	FROM Person INNER JOIN Healthworker ON Person.id = Healthworker.id 
+    INNER JOIN Vaccinations ON Healthworker.id = Vaccinations.healthWorkerID 
+    INNER JOIN Assignments ON Healthworker.id = Assignments.workerID 
+    INNER JOIN PublicHealthFacilities ON Assignments.facilityName = PublicHealthFacilities.name
+    GROUP BY firstName AND PublicHealthFacilities.name;
 
 -- 9
 
