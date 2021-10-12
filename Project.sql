@@ -359,12 +359,18 @@ Queries
 
 -- 7
 
-SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, ApprovedVaccinations.vaccinationType, COUNT(*) 
+SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, ApprovedVaccinations.vaccinationType, COUNT(*) as 'People vaccinated'
 	FROM Vaccinations INNER JOIN ApprovedVaccinations ON Vaccinations.vaccinationName = ApprovedVaccinations.vaccinationName
 		WHERE ApprovedVaccinations.vaccinationType='SAFE' 
         GROUP BY Vaccinations.vaccinationName;
 
 -- 8
+
+SELECT DISTINCT Person.firstName, Person.lastName
+	FROM Person INNER JOIN Healthworker ON Person.id = Healthworker.id WHERE Healthworker.employeeType='NURSE';
+    
+
+
 
 -- 9
 
