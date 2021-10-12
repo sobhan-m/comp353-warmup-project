@@ -352,11 +352,7 @@ Queries
 -- 3
 
 -- 4
-SELECT p.firstName, p.lastName, p.dateOfBirth, p.emailAddress, p.telephoneNumber, p.citizenship, v.vaccinationDate, av.vaccinationName, av.vaccinationType, EXISTS(SELECT * FROM InfectionHistory ih WHERE p.id = ih.personID) hasBeenInfected
-FROM (((Vaccinations v INNER JOIN Person p
-	ON v.id = p.id) INNER JOIN Unregistered u
-		ON v.id = u.id) INNER JOIN ApprovedVaccinations av
-			ON av.vaccinationName = v.vaccinationName);
+
 -- 5
 
 -- 6
@@ -378,6 +374,8 @@ SELECT PublicHealthFacilities.name, firstName, lastName, COUNT(Vaccinations.heal
     GROUP BY firstName AND PublicHealthFacilities.name;
 
 -- 9
+
+
 
 -- Droppers
 
