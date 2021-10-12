@@ -118,6 +118,8 @@ VALUES(1, '1990-01-01','2040-01-01'),
 (30, '1991-12-02', '2041-12-02');
 ;
 
+DROP TABLE Registered;
+
 /*
 ====================================================================
  Unregistered Person
@@ -323,8 +325,8 @@ FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
 );
 
 INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, country, doseNumber)
-VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'Alpha1', 'Canada', 1),
-(12, 6, 'AstraZeneca', '2020-12-12', 10, 'Beta1', 'United States', 2),
+VALUES(17, 2, 'Pfizer', '2020-12-12', 5, 'Alpha1', 'Canada', 1),
+(12, 6, 'Pfizer', '2020-12-12', 10, 'Beta1', 'United States', 2),
 (22, 9, 'Pfizer', '2020-07-10', 7, 'Charlie1', 'Iran', 1),
 (16, 9, 'M.', '2020-12-12', 12, 'Delta1', 'Iraq', 2),
 (14, 6, 'Janssen', '2020-12-12', 6, 'Echo1', 'Lebanon', 1),
@@ -335,7 +337,7 @@ VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'Alpha1', 'Canada', 1),
 (29, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'Canada', 2);
 
 SELECT * FROM Vaccinations;
-
+DELETE FROM Vaccinations;
 DROP TABLE Vaccinations;
 /*
 ====================================================================
@@ -357,7 +359,21 @@ Queries
 
 -- 7
 
+SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, ApprovedVaccinations.vaccinationType, COUNT(*) 
+	FROM Vaccinations INNER JOIN ApprovedVaccinations ON Vaccinations.vaccinationName = ApprovedVaccinations.vaccinationName
+		WHERE ApprovedVaccinations.vaccinationType='SAFE' 
+        GROUP BY Vaccinations.vaccinationName;
+
 -- 8
 
 -- 9
 
+-- Droppers
+
+DROP TABLE Person;
+DROP TABLE Vaccinations;
+DROP TABLE ApprovedVaccinations;
+DROP TABLE Unregistered;
+DROP TABLE Registered;
+DROP TABLE HealthWorker;
+DROP TABLE AgeGroup;
