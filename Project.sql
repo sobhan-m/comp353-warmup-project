@@ -178,9 +178,11 @@ FOREIGN KEY (personID) REFERENCES Person(id)
 
 INSERT INTO InfectionHistory(personID, infectionDate)
 VALUES(6,'2020-10-10'),(16,'2020-09-09'),(19, '2020-08-08'),(8, '2020-07-07'),(9, '2020-06-06'),
-(5, '2020-05-05'),(11, '2020-04-04'),(13, '2020-03-03'),(1, '2020-02-02'),(3, '2020-01-01');
+(5, '2020-05-05'),(11, '2020-04-04'),(13, '2020-03-03'),(1, '2020-02-02'),(3, '2020-01-01'), (3, '2021-01-01'), (2, '2021-01-01'), (2, '2021-03-01'), (4, '2021-01-01'), (12, '2021-01-01');
 
 SELECT * FROM InfectionHistory;
+
+DELETE FROM InfectionHistory;
 
 DROP TABLE InfectionHistory;
 /*
@@ -216,6 +218,8 @@ DROP TABLE HealthWorker;
 CREATE TABLE PublicHealthFacilities(
 name VARCHAR(100),
 address VARCHAR(100),
+province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
+country VARCHAR(100),
 phoneNumber INT,
 webAddress VARCHAR(100),
 facilityType ENUM('HOSPITAL', 'CLINIC', 'SPECIAL INSTALLMENT'),
@@ -225,17 +229,17 @@ FOREIGN KEY (managerID) REFERENCES HealthWorker(workerID),
 PRIMARY KEY (name)
 );
 
-INSERT INTO PublicHealthFacilities(name, address, phoneNumber, webAddress, facilityType, capacity, managerID)
-VALUES('A', '1 Elephant street', 514111111,'www.a.com', 'HOSPITAL', 5000, 1),
-('B', '2 Mouse street', 514222222,'www.b.com', 'CLINIC', 500, 11),
-('C', '3 Cat street', 514333333,'www.c.com', 'SPECIAL INSTALLMENT', 50, 12),
-('D', '4 Dog street', 514444444,'www.d.com', 'HOSPITAL', 6000, 13),
-('E', '5 Bird street', 514555555,'www.e.com', 'CLINIC', 600, 14),
-('F', '6 Snake street', 514666666,'www.f.com', 'SPECIAL INSTALLMENT', 60, 15),
-('G', '7 Spider street', 514777777,'www.g.com', 'HOSPITAL', 7000, 16),
-('H', '8 Kangoroo street', 514888888,'www.h.com', 'CLINIC', 700, 17),
-('I', '9 Ant street', 514999999,'www.i.com', 'SPECIAL INSTALLMENT', 70, 18),
-('J', '10 Rabbit street', 514000000,'www.j.com', 'HOSPITAL', 8000, 19);
+INSERT INTO PublicHealthFacilities(name, address, province, country, phoneNumber, webAddress, facilityType, capacity, managerID)
+VALUES('A', '1 Elephant street', 'QC', 'Canada', 514111111,'www.a.com', 'HOSPITAL', 5000, 1),
+('B', '2 Mouse street', 'QC', 'Canada',  514222222,'www.b.com', 'CLINIC', 500, 11),
+('C', '3 Cat street', 'QC', 'Canada',  514333333,'www.c.com', 'SPECIAL INSTALLMENT', 50, 12),
+('D', '4 Dog street', 'BC', 'Canada',  514444444,'www.d.com', 'HOSPITAL', 6000, 13),
+('E', '5 Bird street', 'BC', 'Canada',  514555555,'www.e.com', 'CLINIC', 600, 14),
+('F', '6 Snake street', 'AB', 'Canada',  514666666,'www.f.com', 'SPECIAL INSTALLMENT', 60, 15),
+('G', '7 Spider street', 'ON', 'Canada',  514777777,'www.g.com', 'HOSPITAL', 7000, 16),
+('H', '8 Kangoroo street', 'ON', 'Canada',  514888888,'www.h.com', 'CLINIC', 700, 17),
+('I', '9 Ant street', 'BC', 'Canada',  514999999,'www.i.com', 'SPECIAL INSTALLMENT', 70, 18),
+('J', '10 Rabbit street', 'QC', 'Canada',  514000000,'www.j.com', 'HOSPITAL', 8000, 19);
 
 SELECT * FROM PublicHealthFacilities;
 
@@ -314,6 +318,7 @@ vaccinationName VARCHAR(100),
 vaccinationDate DATE,
 lotNumber INT,
 location VARCHAR(100),
+province ENUM('NL','PE','NS','NB','QC','ON','MB','SK','AB','BC','YT','NT','NU'),
 country VARCHAR(100),
 doseNumber INT,
 PRIMARY KEY (id, vaccinationDate),
@@ -322,19 +327,26 @@ FOREIGN KEY (healthWorkerID) REFERENCES HealthWorker(workerID),
 FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
 );
 
-INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, country, doseNumber)
-VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'Alpha1', 'Canada', 1),
-(12, 6, 'AstraZeneca', '2020-12-12', 10, 'Beta1', 'United States', 2),
-(22, 9, 'Pfizer', '2020-07-10', 7, 'Charlie1', 'Iran', 1),
-(16, 9, 'M.', '2020-12-12', 12, 'Delta1', 'Iraq', 2),
-(14, 6, 'Janssen', '2020-12-12', 6, 'Echo1', 'Lebanon', 1),
-(19, 2, 'PB', '2020-12-12', 8, 'Quebec1', 'Syria', 2),
-(6, 2, 'Moderna', '2020-12-12', 9, 'October1', 'Moroco', 1),
-(4, 2, 'AZ', '2020-12-12', 11, 'June1', 'Algeria', 2),
-(1, 9, 'AstraZeneca', '2020-12-12', 13, 'Mars1', 'Tunisia', 1),
-(29, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'Canada', 2);
+INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, province, country, doseNumber)
+VALUES(17, 2, 'AstraZeneca', '2020-12-12', 5, 'Alpha1', 'QC', 'Canada', 1),
+(12, 6, 'AstraZeneca', '2020-08-12', 10, 'Beta1', NULL, 'United States', 1),
+(12, 6, 'AstraZeneca', '2020-12-12', 10, 'Beta1', NULL, 'United States', 2),
+(22, 9, 'Pfizer', '2020-07-10', 7, 'Charlie1', NULL, 'Iran', 1),
+(16, 9, 'M.', '2020-11-12', 12, 'Delta1', NULL, 'Iraq', 1),
+(16, 9, 'M.', '2020-12-12', 12, 'Delta1', NULL, 'Iraq', 2),
+(14, 6, 'Janssen', '2020-12-12', 6, 'Echo1', NULL, 'Lebanon', 1),
+(19, 2, 'PB', '2020-11-12', 8, 'Quebec1', NULL, 'Syria', 1),
+(19, 2, 'PB', '2020-12-12', 8, 'Quebec1', NULL, 'Syria', 2),
+(7, 2, 'Moderna', '2020-12-12', 9, 'October1', NULL, 'Moroco', 1),
+(4, 2, 'AZ', '2020-11-12', 11, 'June1', NULL, 'Algeria', 1),
+(4, 2, 'AZ', '2020-12-12', 11, 'June1', NULL, 'Algeria', 2),
+(1, 9, 'AstraZeneca', '2020-12-12', 13, 'Mars1', NULL, 'Tunisia', 1),
+(2, 9, 'AstraZeneca', '2020-11-12', 14, 'July1', 'QC', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'BC', 'Canada', 2);
 
 SELECT * FROM Vaccinations;
+
+DELETE FROM Vaccinations;
 
 DROP TABLE Vaccinations;
 /*
@@ -373,9 +385,38 @@ FROM (((Vaccinations v INNER JOIN Person p
 
 
 -- 5
-
+SELECT Person.id AS 'ID', firstName AS 'First Name', LastName AS 'Last Name', employeeType AS 'Employement'
+FROM Person, InfectionHistory, HealthWorker, Vaccinations
+WHERE Person.id = HealthWorker.id AND employeeType = 'Nurse' AND Person.id NOT IN (SELECT v2.id FROM Vaccinations v2)
+GROUP BY Person.id;
 -- 6
 
+-- People not vaccinated
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count",  CASE WHEN MAX(v.doseNumber) IS NULL THEN 0 ELSE MAX(v.doseNumber) END AS 'Dose number'
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+WHERE p.id NOT IN (SELECT v.id FROM Vaccinations v)
+GROUP BY p.id;
+
+-- People one dose
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count", MAX(v.doseNumber)
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+GROUP BY p.id
+HAVING COUNT(v.doseNumber) = 1;
+
+-- People with two doses and 1 infection
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count", MAX(v.doseNumber)
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+GROUP BY p.id
+HAVING COUNT(DISTINCT v.doseNumber) = 2 AND COUNT(DISTINCT ih.infectionDate) = 1;
 -- 7
 
 -- 8
