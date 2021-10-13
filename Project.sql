@@ -280,6 +280,9 @@ VALUES(1, 'A', '2019-12-12', NULL),
 (17, 'H', '2020-03-23', NULL),
 (18, 'I', '2020-07-12', NULL),
 (19, 'J', '2020-06-11', NULL);
+
+DROP TABLE Assignments;
+
 /*
 ====================================================================
  ApprovedVaccinations
@@ -360,10 +363,11 @@ Queries
 -- 2
 
 -- 3
+
 SELECT phf.name, phf.address, phf.phoneNumber, phf.webAddress, phf.facilityType, m.firstName, m.lastName, q1.employeeCount, q2.nurseCount
 FROM (((PublicHealthFacilities phf INNER JOIN HealthWorker hw
 	ON phf.managerID = hw.workerID) INNER JOIN Person m
-		ON hw.id = m.id) INNER JOIN
+		ON hw.id = m.id) INNER JOIN 
 		(SELECT a1.facilityName, COUNT(a1.workerID) employeeCount
 		FROM Assignments a1
 		GROUP BY a1.facilityName) q1
@@ -372,17 +376,17 @@ FROM (((PublicHealthFacilities phf INNER JOIN HealthWorker hw
 					FROM Assignments a2 INNER JOIN HealthWorker hw2
 						ON a2.workerID = hw2.workerID
 					GROUP BY a2.facilityName) q2
-						ON q2.facilityName = phf.name;
+						ON q2.facilityName = phf.name
+                        WHERE phf.province = 'QC';
 
 -- 4
+
 SELECT p.firstName, p.lastName, p.dateOfBirth, p.emailAddress, p.telephoneNumber, p.citizenship, v.vaccinationDate, av.vaccinationName, av.vaccinationType, EXISTS(SELECT * FROM InfectionHistory ih WHERE p.id = ih.personID) hasBeenInfected
 FROM (((Vaccinations v INNER JOIN Person p
 	ON v.id = p.id) INNER JOIN Unregistered u
 		ON v.id = u.id) INNER JOIN ApprovedVaccinations av
-			ON av.vaccinationName = v.vaccinationName);
-				 
-
-
+			ON av.vaccinationName = v.vaccinationName)
+            WHERE v.province = 'QC';
 
 -- 5
 SELECT Person.id AS 'ID', firstName AS 'First Name', LastName AS 'Last Name', employeeType AS 'Employement'
