@@ -328,18 +328,25 @@ FOREIGN KEY (vaccinationName) REFERENCES ApprovedVaccinations(vaccinationName)
 
 INSERT INTO Vaccinations(id, healthWorkerID, vaccinationName, vaccinationDate, lotNumber, location, country, doseNumber)
 VALUES(17, 2, 'Pfizer', '2020-12-12', 5, 'Alpha1', 'Canada', 1),
-(12, 6, 'Pfizer', '2020-12-12', 10, 'Beta1', 'United States', 2),
+(12, 6, 'AstraZeneca', '2020-08-12', 10, 'Beta1', 'United States', 1),
+(12, 6, 'AstraZeneca', '2020-12-12', 10, 'Beta1', 'United States', 2),
 (22, 9, 'Pfizer', '2020-07-10', 7, 'Charlie1', 'Iran', 1),
+(16, 9, 'M.', '2020-11-12', 12, 'Delta1', 'Iraq', 1),
 (16, 9, 'M.', '2020-12-12', 12, 'Delta1', 'Iraq', 2),
 (14, 6, 'Janssen', '2020-12-12', 6, 'Echo1', 'Lebanon', 1),
+(19, 2, 'PB', '2020-11-12', 8, 'Quebec1', 'Syria', 1),
 (19, 2, 'PB', '2020-12-12', 8, 'Quebec1', 'Syria', 2),
-(6, 2, 'Moderna', '2020-12-12', 9, 'October1', 'Moroco', 1),
+(7, 2, 'Moderna', '2020-12-12', 9, 'October1', 'Moroco', 1),
+(4, 2, 'AZ', '2020-11-12', 11, 'June1', 'Algeria', 1),
 (4, 2, 'AZ', '2020-12-12', 11, 'June1', 'Algeria', 2),
 (1, 9, 'AstraZeneca', '2020-12-12', 13, 'Mars1', 'Tunisia', 1),
-(29, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'Canada', 2);
+(2, 9, 'AstraZeneca', '2020-11-12', 14, 'July1', 'Canada', 1),
+(2, 9, 'AstraZeneca', '2020-12-12', 14, 'July1', 'Canada', 2);
 
 SELECT * FROM Vaccinations;
+
 DELETE FROM Vaccinations;
+
 DROP TABLE Vaccinations;
 /*
 ====================================================================
