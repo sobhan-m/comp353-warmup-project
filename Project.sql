@@ -118,6 +118,8 @@ VALUES(1, '1990-01-01','2040-01-01'),
 (30, '1991-12-02', '2041-12-02');
 ;
 
+DROP TABLE Registered;
+
 /*
 ====================================================================
  Unregistered Person
@@ -364,10 +366,12 @@ Queries
 -- 4
 
 -- 5
+
 SELECT Person.id AS 'ID', firstName AS 'First Name', LastName AS 'Last Name', employeeType AS 'Employement'
 FROM Person, InfectionHistory, HealthWorker, Vaccinations
 WHERE Person.id = HealthWorker.id AND employeeType = 'Nurse' AND Person.id NOT IN (SELECT v2.id FROM Vaccinations v2)
 GROUP BY Person.id;
+
 -- 6
 
 -- People not vaccinated
@@ -396,9 +400,36 @@ FROM Person p LEFT JOIN InfectionHistory ih
 			ON p.id = v.id
 GROUP BY p.id
 HAVING COUNT(DISTINCT v.doseNumber) = 2 AND COUNT(DISTINCT ih.infectionDate) = 1;
+
 -- 7
+
+SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, ApprovedVaccinations.vaccinationType, COUNT(*) as 'People vaccinated'
+	FROM Vaccinations INNER JOIN ApprovedVaccinations ON Vaccinations.vaccinationName = ApprovedVaccinations.vaccinationName
+		WHERE ApprovedVaccinations.vaccinationType='SAFE' 
+        GROUP BY Vaccinations.vaccinationName;
 
 -- 8
 
+SELECT PublicHealthFacilities.name as 'Location', firstName, lastName, startDate, COUNT(DISTINCT Vaccinations.id) as 'People vaccinated'
+	FROM Person INNER JOIN Healthworker ON Person.id = Healthworker.id 
+		INNER JOIN Vaccinations ON Healthworker.workerID = Vaccinations.healthWorkerID 
+		INNER JOIN Assignments ON Healthworker.workerID = Assignments.workerID 
+		INNER JOIN PublicHealthFacilities ON Assignments.facilityName = PublicHealthFacilities.name
+		GROUP BY firstName;
+
 -- 9
 
+SELECT Person.city, COUNT(DISTINCT Vaccinations.id) as 'people vaccinated in city'
+	FROM Person,Vaccinations 
+    WHERE Vaccinations.province = 'QC' AND city = 'Montreal'
+    GROUP BY city;
+
+-- Droppers
+
+DROP TABLE Person;
+DROP TABLE Vaccinations;
+DROP TABLE ApprovedVaccinations;
+DROP TABLE Unregistered;
+DROP TABLE Registered;
+DROP TABLE HealthWorker;
+DROP TABLE AgeGroup;
