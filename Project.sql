@@ -363,10 +363,12 @@ Queries
 -- 4
 
 -- 5
+
 SELECT Person.id AS 'ID', firstName AS 'First Name', LastName AS 'Last Name', employeeType AS 'Employement'
 FROM Person, InfectionHistory, HealthWorker, Vaccinations
 WHERE Person.id = HealthWorker.id AND employeeType = 'Nurse' AND Person.id NOT IN (SELECT v2.id FROM Vaccinations v2)
 GROUP BY Person.id;
+
 -- 6
 
 -- People not vaccinated
@@ -395,6 +397,7 @@ FROM Person p LEFT JOIN InfectionHistory ih
 			ON p.id = v.id
 GROUP BY p.id
 HAVING COUNT(DISTINCT v.doseNumber) = 2 AND COUNT(DISTINCT ih.infectionDate) = 1;
+
 -- 7
 
 SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, ApprovedVaccinations.vaccinationType, COUNT(*) as 'People vaccinated'
@@ -404,21 +407,19 @@ SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, Approv
 
 -- 8
 
-SELECT PublicHealthFacilities.name, firstName, lastName, COUNT(Vaccinations.healthWorkerID)/10 as 'People vaccinated'
+SELECT PublicHealthFacilities.name as 'Location', firstName, lastName, startDate, COUNT(DISTINCT Vaccinations.id) as 'People vaccinated'
 	FROM Person INNER JOIN Healthworker ON Person.id = Healthworker.id 
-		INNER JOIN Vaccinations ON Healthworker.id = Vaccinations.healthWorkerID 
-		INNER JOIN Assignments ON Healthworker.id = Assignments.workerID 
+		INNER JOIN Vaccinations ON Healthworker.workerID = Vaccinations.healthWorkerID 
+		INNER JOIN Assignments ON Healthworker.workerID = Assignments.workerID 
 		INNER JOIN PublicHealthFacilities ON Assignments.facilityName = PublicHealthFacilities.name
-		GROUP BY firstName AND PublicHealthFacilities.name;
+		GROUP BY firstName;
 
 -- 9
 
-SELECT Person.city, COUNT(Vaccinations.id)/30 as 'people vaccinated in city'
+SELECT Person.city, COUNT(DISTINCT Vaccinations.id)/10 as 'people vaccinated in city'
 	FROM Person,Vaccinations 
     WHERE Person.province = 'QC'
     GROUP BY city;
-	
-
 
 -- Droppers
 
