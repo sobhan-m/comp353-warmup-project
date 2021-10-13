@@ -419,9 +419,9 @@ SELECT PublicHealthFacilities.name as 'Location', firstName, lastName, startDate
 
 -- 9
 
-SELECT Person.city, COUNT(DISTINCT Vaccinations.id)/10 as 'people vaccinated in city'
+SELECT Person.city, COUNT(DISTINCT Vaccinations.id) as 'people vaccinated in city'
 	FROM Person,Vaccinations 
-    WHERE Person.province = 'QC'
+    WHERE Vaccinations.province = 'QC' AND city = 'Montreal'
     GROUP BY city;
 
 -- Droppers
