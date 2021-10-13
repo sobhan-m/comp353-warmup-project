@@ -180,9 +180,11 @@ FOREIGN KEY (personID) REFERENCES Person(id)
 
 INSERT INTO InfectionHistory(personID, infectionDate)
 VALUES(6,'2020-10-10'),(16,'2020-09-09'),(19, '2020-08-08'),(8, '2020-07-07'),(9, '2020-06-06'),
-(5, '2020-05-05'),(11, '2020-04-04'),(13, '2020-03-03'),(1, '2020-02-02'),(3, '2020-01-01');
+(5, '2020-05-05'),(11, '2020-04-04'),(13, '2020-03-03'),(1, '2020-02-02'),(3, '2020-01-01'), (3, '2021-01-01'), (2, '2021-01-01'), (2, '2021-03-01'), (4, '2021-01-01'), (12, '2021-01-01');
 
 SELECT * FROM InfectionHistory;
+
+DELETE FROM InfectionHistory;
 
 DROP TABLE InfectionHistory;
 /*
@@ -354,9 +356,38 @@ Queries
 -- 4
 
 -- 5
-
+SELECT Person.id AS 'ID', firstName AS 'First Name', LastName AS 'Last Name', employeeType AS 'Employement'
+FROM Person, InfectionHistory, HealthWorker, Vaccinations
+WHERE Person.id = HealthWorker.id AND employeeType = 'Nurse' AND Person.id NOT IN (SELECT v2.id FROM Vaccinations v2)
+GROUP BY Person.id;
 -- 6
 
+-- People not vaccinated
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count",  CASE WHEN MAX(v.doseNumber) IS NULL THEN 0 ELSE MAX(v.doseNumber) END AS 'Dose number'
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+WHERE p.id NOT IN (SELECT v.id FROM Vaccinations v)
+GROUP BY p.id;
+
+-- People one dose
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count", MAX(v.doseNumber)
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+GROUP BY p.id
+HAVING COUNT(v.doseNumber) = 1;
+
+-- People with two doses and 1 infection
+SELECT p.id, p.firstName, p.lastName, p.dateOfBirth, CASE WHEN p.id IN (SELECT personID FROM InfectionHistory) THEN COUNT(DISTINCT ih.infectionDate) ELSE 0 END AS "Infection Count", MAX(v.doseNumber)
+FROM Person p LEFT JOIN InfectionHistory ih
+	ON p.id = ih.personID
+		LEFT JOIN Vaccinations v
+			ON p.id = v.id
+GROUP BY p.id
+HAVING COUNT(DISTINCT v.doseNumber) = 2 AND COUNT(DISTINCT ih.infectionDate) = 1;
 -- 7
 
 SELECT Vaccinations.vaccinationName, ApprovedVaccinations.dateOfApproval, ApprovedVaccinations.vaccinationType, COUNT(*) as 'People vaccinated'
