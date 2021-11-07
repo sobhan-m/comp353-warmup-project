@@ -362,7 +362,26 @@ Queries
 
 -- 1
 
+SELECT Person.firstName, Person.lastName, Person.dateOfBirth,
+Registered.medicareCardNum, Unregistered.passportNum, emailAddress,
+telephoneNumber, city, Vaccinations.vaccinationName, vaccinationType,
+vaccinationDate, Person.id IN(SELECT personID FROM InfectionHistory) AS 'Infected or not'
+		FROM Person LEFT JOIN Registered ON Person.id = Registered.id
+		LEFT JOIN Unregistered ON Person.id = Unregistered.id
+		LEFT JOIN Vaccinations ON Person.id = Vaccinations.id
+		INNER JOIN ApprovedVaccinations ON Vaccinations.vaccinationName = ApprovedVaccinations.vaccinationName
+WHERE ageGroupID >= 2
+GROUP BY Person.id
+ORDER BY Person.province;
+
 -- 2
+
+SELECT DISTINCT Person.id, firstName, lastName, dateOfBirth,
+emailAddress, telephoneNumber, city,  Person.id IN(SELECT personID FROM InfectionHistory) AS 'Infected or not'
+	FROM Person INNER JOIN Registered ON Person.id = Registered.id
+WHERE ageGroupID < 8 AND Person.id NOT IN (SELECT Vaccinations.id FROM Vaccinations)
+GROUP BY Person.id
+ORDER BY Person.province;
 
 -- 3
 
